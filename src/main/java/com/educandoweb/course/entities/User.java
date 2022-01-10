@@ -9,8 +9,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "tb_user")
 public class User implements Serializable {
 
 	/**
@@ -22,6 +25,7 @@ public class User implements Serializable {
 	private Long id;
 	private String name, email, phone, password;
 
+	@OneToMany(mappedBy = "client") // Relacionamento de um cliente para vários pedidos. A anotação mappedBy é para informar quem está mapeado
 	private List<Order> orders = new ArrayList<>();
 
 	public User() {

@@ -8,8 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "tb_order") //Nomeando a tabela para tb_order ao inves de nomear a tabela com o mesmo nome da classe;
 public class Order implements Serializable {
 	/**
 	 * 
@@ -20,6 +24,8 @@ public class Order implements Serializable {
 	private Long id;
 	private Instant moment;
 	
+	@ManyToOne //Muitos pedidos para um cliente, para instruir o JPA para criar uma chave estrangeira.
+	@JoinColumn(name = "client_id") //Nome da coluna que vai ter no banco de dados
 	private User client;
 
 	public Order() {
