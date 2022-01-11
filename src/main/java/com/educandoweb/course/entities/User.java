@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tb_user")
 public class User implements Serializable {
@@ -25,7 +27,10 @@ public class User implements Serializable {
 	private Long id;
 	private String name, email, phone, password;
 
-	@OneToMany(mappedBy = "client") // Relacionamento de um cliente para vários pedidos. A anotação mappedBy é para informar quem está mapeado
+	@OneToMany(mappedBy = "client") // Relacionamento de um cliente para vários pedidos. A anotação mappedBy é para
+									// informar quem está mapeado
+	@JsonIgnore // Para evitar a associção de mão dupla, evitando o "loop infinito" já que
+				// existe uma associção no order e no user
 	private List<Order> orders = new ArrayList<>();
 
 	public User() {
@@ -106,6 +111,5 @@ public class User implements Serializable {
 		return "User [id=" + id + ", name=" + name + ", email=" + email + ", phone=" + phone + ", password=" + password
 				+ ", orders=" + orders + "]";
 	}
-
 
 }
