@@ -48,7 +48,8 @@ public class Order implements Serializable {
 	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL) // O nome do mapeamento é o o mesmo do atributo com a
 																// anotação @MapsId, lá na
 	// class Payment
-	// no caso do cascade = CascadeType.ALL, é que no caso do @OneToOne é para que os dois mapeamentos terão o mesmo ID
+	// no caso do cascade = CascadeType.ALL, é que no caso do @OneToOne é para que
+	// os dois mapeamentos terão o mesmo ID
 	private Payment payment;
 
 	public Order() {
@@ -88,6 +89,17 @@ public class Order implements Serializable {
 
 	public Set<OrderItem> getItems() {
 		return items;
+	}
+
+	public Double getTotal() {
+		Double sum = 0.0;
+
+		for (OrderItem orderItem : items) {
+			sum += orderItem.getSubTotal();
+		}
+
+		return sum;
+
 	}
 
 	@Override
