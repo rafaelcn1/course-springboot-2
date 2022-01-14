@@ -12,7 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_product")
@@ -37,6 +40,9 @@ public class Product implements Serializable {
 																	// @@JoinColumn no caso categoria
 	private Set<Category> categories = new HashSet<>(); // Conjunto que garante que o mesmo produto nao vai ter mais de
 														// uma categoria, onde é iniciado para nao começar nula.
+
+	@OneToMany(mappedBy = "id.product") // Mesmo nome que ta na classe OrderItemPk
+	private Set<OrderItem> items = new HashSet<>();
 
 	public Product() {
 		super();
@@ -98,6 +104,17 @@ public class Product implements Serializable {
 
 	public void setCategories(Set<Category> categories) {
 		this.categories = categories;
+	}
+
+	@JsonIgnore
+	public Set<Order> getOrders() {
+		Set<Order> set = new HashSet<>();
+
+		for (OrderItem orderItem : items) {
+			set.add(orderItem.getOrder());
+		}
+
+		return set;
 	}
 
 	@Override
